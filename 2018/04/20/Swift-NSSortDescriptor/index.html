@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="enxi&#39;s blog">
 <meta property="og:description" content="在上一篇文章中，我们了解了在Swift中使用运行时会面临的一些问题，这篇文章我们试着用Swift自己的方式来实现这个工程 从排序函数开始为了模拟NSSortDescriptor的实现，我们先要从它的排序函数开始，它是一个接受两个相同类型的参数，并返回Bool的函数，我们用一个typealias来表示 1typealias sortDescriptor = (T,T) -&amp;gt; Bool 于是，连">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-09T17:12:40.687Z">
+<meta property="og:updated_time" content="2019-01-10T07:59:55.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用Swift类型系统模拟OC的运行时特性">
 <meta name="twitter:description" content="在上一篇文章中，我们了解了在Swift中使用运行时会面临的一些问题，这篇文章我们试着用Swift自己的方式来实现这个工程 从排序函数开始为了模拟NSSortDescriptor的实现，我们先要从它的排序函数开始，它是一个接受两个相同类型的参数，并返回Bool的函数，我们用一个typealias来表示 1typealias sortDescriptor = (T,T) -&amp;gt; Bool 于是，连">
@@ -412,7 +412,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-01-10 01:12:40" itemprop="dateModified" datetime="2019-01-10T01:12:40+08:00">2019-01-10</time>
+                <time title="修改时间：2019-01-10 15:59:55" itemprop="dateModified" datetime="2019-01-10T15:59:55+08:00">2019-01-10</time>
               
             
           </span>
@@ -438,16 +438,6 @@
           
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/20/Swift-NSSortDescriptor/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2018/04/20/Swift-NSSortDescriptor/" itemprop="commentsCount"></span>
-                </a>
-              </span>
             
           
 
@@ -578,12 +568,7 @@
           
 
   
-    <div class="comments" id="comments">
-      
-        <div id="gitment-container"></div>
-      
-    </div>
-
+    <div id="gitalk-container"></div>
   
 
 
@@ -859,46 +844,37 @@
 
 
 
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-
-    
-      <script>
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: '1524226440000',
-            owner: 'enxibaba',
-            repo: 'blog_Comment',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '841b06c7726461bc24eb3426deb30ffd4d22db0a',
-            
-                client_id: '908296d2a0530e35354a'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      renderGitment();
-      
-      </script>
-    
 
 
 
 
 
+
+
+  
+  
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+
+  
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.css">
+
+  
+  
+  <script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+   <script>
+        var gitalk = new Gitalk({
+          clientID: 'd21ac3cc1ac3267bc504',
+          clientSecret: '1e7729c497ca1f915b126c1f1e0ce4fe82233b05',
+          repo: 'blog_Comment',
+          owner: 'enxibaba',
+          admin: [''],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')
+       </script>
 
 
   

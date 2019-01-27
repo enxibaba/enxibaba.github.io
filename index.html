@@ -349,6 +349,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://enxibaba.github.io/2019/01/27/Extending-optionals-in-Swift/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="恩熙爸爸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="enxi's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/01/27/Extending-optionals-in-Swift/" class="post-title-link" itemprop="http://enxibaba.github.io/index.html">Optionals extension</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-27 22:47:33 / 修改时间：22:51:54" itemprop="dateCreated datePublished" datetime="2019-01-27T22:47:33+08:00">2019-01-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有<code>Optional</code>实际上都是使用<code>enum optional&lt;wrapped&gt;</code>表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。</p>
+<h1 id="Converting-nil-into-errors"><a href="#Converting-nil-into-errors" class="headerlink" title="Converting nil into errors"></a>Converting nil into errors</h1><p>当我们处理可选值的时候，通常想要将<code>nil</code>转换成Swift标准类型error，然后将这个错误提示给用户，例如，这里我们准备通过一系列操作将图片上载到服务器。因为每个操作都可能返回nil，所以我们需要解包每个步骤的结果，如果遇到nil，就会抛出一个错误。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">prepareImageForUpload</span><span class="params">(<span class="number">_</span> image: UIImage)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">UIImage</span> &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> watermarked = watermark(image) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="type">Error</span>.preparationFailed</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> encrypted = encrypt(watermarked) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="type">Error</span>.preparationFailed</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> encryted</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/01/27/Extending-optionals-in-Swift/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://enxibaba.github.io/2018/12/19/RunLoop/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1104,7 +1254,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

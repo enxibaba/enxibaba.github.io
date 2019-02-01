@@ -1,875 +1,993 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
+<html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
+    <meta charset="utf-8">
+<title>Optionals extension - enxi&#39;s blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.6.0">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.6.0">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.6.0">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=6.6.0" color="#222">
-
-
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '6.6.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
-    fancybox: true,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
-
-  <meta name="description" content="Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有Optional实际上都是使用enum optional&amp;lt;wrapped&amp;gt;表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。 Converting nil into errors当我们处理可选值的时候，通常想要将nil转换成Swift标准类型erro">
+    <meta name="description" content="Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有Optional实际上都是使用enum optional&amp;lt;wrapped&amp;gt;表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。 Converting nil into errors当我们处理可选值的时候，通常想要将nil转换成Swift标准类型erro">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Optionals extension">
 <meta property="og:url" content="http://enxibaba.github.io/2019/01/27/Extending-optionals-in-Swift/index.html">
 <meta property="og:site_name" content="enxi&#39;s blog">
 <meta property="og:description" content="Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有Optional实际上都是使用enum optional&amp;lt;wrapped&amp;gt;表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。 Converting nil into errors当我们处理可选值的时候，通常想要将nil转换成Swift标准类型erro">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-27T14:51:54.410Z">
+<meta property="og:updated_time" content="2019-01-27T15:06:34.336Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Optionals extension">
 <meta name="twitter:description" content="Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有Optional实际上都是使用enum optional&amp;lt;wrapped&amp;gt;表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。 Converting nil into errors当我们处理可选值的时候，通常想要将nil转换成Swift标准类型erro">
 
 
 
-  <link rel="alternate" href="/atom.xml" title="enxi's blog" type="application/atom+xml">
+
+
+<link rel="icon" href="/images/favicon.svg">
 
 
 
 
-  <link rel="canonical" href="http://enxibaba.github.io/2019/01/27/Extending-optionals-in-Swift/">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
 
 
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
 
-<script id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
 
-  <title>Optionals extension | enxi's blog</title>
-  
+    
+    
 
-
-
-
-
-
-
-
-
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
 
 
-  <noscript>
-  <style>
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
+    
+    
+    
+    
 
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
+<link rel="stylesheet" href="/css/back-to-top.css">
 
-    .use-motion .logo-line-before i { left: initial; }
-    .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
 
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
 </head>
-
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">enxi's blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-    
-  </div>
-
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
-
-  </li>
-
-      
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-</nav>
-
-
-
-  
-
-
-
-</div>
-    </header>
-
-    
-
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-          <div id="content" class="content">
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
             
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://enxibaba.github.io/2019/01/27/Extending-optionals-in-Swift/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="恩熙爸爸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="enxi's blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Optionals extension
-
-              
+                <img src="/images/logo.svg" alt="Optionals extension" height="28">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-01-27 22:47:33 / 修改时间：22:51:54" itemprop="dateCreated datePublished" datetime="2019-01-27T22:47:33+08:00">2019-01-27</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+            </a>
         </div>
-      </header>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="http://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
     
-
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有<code>Optional</code>实际上都是使用<code>enum optional&lt;wrapped&gt;</code>表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。</p>
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-01-27T14:47:33.000Z">2019-01-27</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    16 分钟 读完 (大约 2344 个字)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Optionals extension
+            
+        </h1>
+        <div class="content">
+            <p>Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有<code>Optional</code>实际上都是使用<code>enum optional&lt;wrapped&gt;</code>表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。</p>
 <h1 id="Converting-nil-into-errors"><a href="#Converting-nil-into-errors" class="headerlink" title="Converting nil into errors"></a>Converting nil into errors</h1><p>当我们处理可选值的时候，通常想要将<code>nil</code>转换成Swift标准类型error，然后将这个错误提示给用户，例如，这里我们准备通过一系列操作将图片上载到服务器。因为每个操作都可能返回nil，所以我们需要解包每个步骤的结果，如果遇到nil，就会抛出一个错误。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">prepareImageForUpload</span><span class="params">(<span class="number">_</span> image: UIImage)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">UIImage</span> &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> watermarked = watermark(image) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="type">Error</span>.preparationFailed</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> encrypted = encrypt(watermarked) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="type">Error</span>.preparationFailed</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> encryted</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepareImageForUpload</span><span class="hljs-params">(<span class="hljs-number">_</span> image: UIImage)</span></span> <span class="hljs-keyword">throws</span> -&gt; <span class="hljs-type">UIImage</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> watermarked = watermark(image) <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">throw</span> <span class="hljs-type">Error</span>.preparationFailed</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> encrypted = encrypt(watermarked) <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">throw</span> <span class="hljs-type">Error</span>.preparationFailed</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> encryted</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>上面的代码可以工作，但是让我们看看是否可以使用扩展的力量使其更简洁。首先，让我们在可选枚举类型上创建一个扩展，它允许我们返回其包装值，或者在包含nil的情况下抛出一个错误，如下所示：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Optional</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">orThrow</span><span class="params">(<span class="number">_</span> errorExpression: @autoclosure<span class="params">()</span></span></span> -&gt; <span class="type">Error</span>) <span class="keyword">throws</span> -&gt; <span class="type">Wrapped</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> value = <span class="keyword">self</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> errorExpression()</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码可以工作，但是让我们看看是否可以使用扩展的力量使其更简洁。首先，让我们在可选枚举类型上创建一个扩展，它允许我们返回其包装值，或者在包含nil的情况下抛出一个错误，如下所示：<br><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">Optional</span> </span>&#123;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">orThrow</span><span class="hljs-params">(<span class="hljs-number">_</span> errorExpression: @autoclosure<span class="hljs-params">()</span></span></span> -&gt; <span class="hljs-type">Error</span>) <span class="hljs-keyword">throws</span> -&gt; <span class="hljs-type">Wrapped</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> value = <span class="hljs-keyword">self</span> <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">throw</span> errorExpression()</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="hljs-keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>上面的代码，我们使用<code>@autoclosure</code>,以便我们只需要在需要时评估错误表达式，而不做任何不必要的工作 - （不需要我们的新函数的调用者使用任何其他语法）。</p>
 <p>利用上面的内容，再加上使用<code>flatmap</code>可选链接，我们现在可以构建一个非常好的“chain of operations”，它允许我们处理由链末尾的零值导致的任何错误，并轻松地将任何此类丢失的值转换为适当的错误-如：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">prepareImageForUpload</span><span class="params">(<span class="number">_</span> image: UIImage)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">UIImage</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">try</span> watermark(image)</span><br><span class="line">        .flatMap(encrypt)</span><br><span class="line">        .orThrow(<span class="type">Error</span>.preparationFailed)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepareImageForUpload</span><span class="hljs-params">(<span class="hljs-number">_</span> image: UIImage)</span></span> <span class="hljs-keyword">throws</span> -&gt; <span class="hljs-type">UIImage</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">try</span> watermark(image)</span><br><span class="line">        .flatMap(encrypt)</span><br><span class="line">        .orThrow(<span class="hljs-type">Error</span>.preparationFailed)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>做类似上面的事情似乎是纯粹的表面化的改变，但是它使我们能够通过将代码建模，为一系列操作提高代码的可预测性，而不是必须跟踪多个局部变量。</p>
-<h1 id="Expressive-checks"><a href="#Expressive-checks" class="headerlink" title="Expressive checks"></a>Expressive checks</h1><p>处理<code>Optional</code>的另外一种场景就是对未包装的值进行某种检查，例如，当我门实现一个登录UI,我们可能想要更具当前输入框是否有输入来改变输入框的边框颜色，<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">FormViewController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">textFieldDidChange</span><span class="params">(<span class="number">_</span> textField: UITextField)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> textField.text?.isEmpty ?? <span class="literal">true</span> &#123;</span><br><span class="line">            textField.layer.borderColor = <span class="type">UIColor</span>.red.cgColor</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            textField.layer.borderColor = <span class="type">UIColor</span>.green.cgColor</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Expressive-checks"><a href="#Expressive-checks" class="headerlink" title="Expressive checks"></a>Expressive checks</h1><p>处理<code>Optional</code>的另外一种场景就是对未包装的值进行某种检查，例如，当我门实现一个登录UI,我们可能想要更具当前输入框是否有输入来改变输入框的边框颜色，<br><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">FormViewController</span> </span>&#123;</span><br><span class="line">    <span class="hljs-meta">@objc</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">textFieldDidChange</span><span class="hljs-params">(<span class="hljs-number">_</span> textField: UITextField)</span></span> &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> textField.text?.isEmpty ?? <span class="hljs-literal">true</span> &#123;</span><br><span class="line">            textField.layer.borderColor = <span class="hljs-type">UIColor</span>.red.cgColor</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            textField.layer.borderColor = <span class="hljs-type">UIColor</span>.green.cgColor</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>当一个<code>Optional</code>包含<code>nil</code>时，在清晰的上下文使用默认值，通常是一个很好的解决办法。但是这也会导致代码由于需要引入额外的语法而变得难以理解，由于检查字符串（或者其他的集合类型）是否为空是非常常见的操作，我们可以通过对<code>Optional</code>进行扩展来提高代码的可读性。</p>
 <p>这里我们通过给遵循了<code>Collection</code>的<code>Optionals</code>添加一个叫做 isNilOrEmpty 的计算属性，在该类型中，我们执行上面同样的检查。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Optional</span> <span class="title">where</span> <span class="title">Wrapped</span>: <span class="title">Collection</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> isNilOrEmpty: <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span>?.isEmpty ?? <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">Optional</span> <span class="hljs-title">where</span> <span class="hljs-title">Wrapped</span>: <span class="hljs-title">Collection</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">var</span> isNilOrEmpty: <span class="hljs-type">Bool</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>?.isEmpty ?? <span class="hljs-literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>现在更新我们的 textFiled 文本字段的处理代码以使用我们的新属性，我们最终得到一个更好，更容易阅读的控制流。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">FormViewController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">textFieldDidChange</span><span class="params">(<span class="number">_</span> textField: UITextField)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> textField.text.isNirOrEmpty &#123;</span><br><span class="line">            textField.layer.borderColor = <span class="type">UIColor</span>.red.cgColor</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            textFiled.layer.borderColor = <span class="type">UIColor</span>.green.cgColor</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">FormViewController</span> </span>&#123;</span><br><span class="line">    <span class="hljs-meta">@objc</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">textFieldDidChange</span><span class="hljs-params">(<span class="hljs-number">_</span> textField: UITextField)</span></span> &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> textField.text.isNirOrEmpty &#123;</span><br><span class="line">            textField.layer.borderColor = <span class="hljs-type">UIColor</span>.red.cgColor</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            textFiled.layer.borderColor = <span class="hljs-type">UIColor</span>.green.cgColor</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在<code>Optional</code>上使用扩展来实现便利API的好处是，我们可以在不同的上下文环境中轻松的重用这些相同的API。例如，我们可能想要检查一组可选的已完成教程步骤是否为空或，以确定要向用户显示的初始UI，或使用相同的API检查用户是否在我们的应用中添加了任何朋友。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> showInitialTutorial = completedTutorialSteps.isNilOrEmpty</span><br><span class="line"><span class="keyword">let</span> hasAddedFriends = !user.friends.isNilOrEmpty</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> showInitialTutorial = completedTutorialSteps.isNilOrEmpty</span><br><span class="line"><span class="hljs-keyword">let</span> hasAddedFriends = !user.friends.isNilOrEmpty</span><br></pre></td></tr></table></figure>
 <p>使用扩展来包装某些常用表达式也是使我们的代码更加简洁的好方法，因为这些表达式的意图变得非常清晰</p>
 <h1 id="Matching-against-a-predicate"><a href="#Matching-against-a-predicate" class="headerlink" title="Matching against a predicate"></a>Matching against a predicate</h1><p>接下来，让我们看看如何向<code>Optional</code>添加匹配功能。就像我们之前检查集合是否为空一样，在展开<code>Optional</code>表达式时，通常希望将可选值与我们自定义的表达式相匹配。<br>例如，这里我们将Search Bar中的文本解包，然后在执行搜索之前验证它是否包含至少3个字符。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> query = searchBar.text, query.length &gt; <span class="number">2</span> <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">performSearch(with: query)</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> query = searchBar.text, query.length &gt; <span class="hljs-number">2</span> <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">performSearch(with: query)</span><br></pre></td></tr></table></figure>
 <p>同样，上面的代码也可以工作，但是让我们看看是否可以通过允许任何可选的条件与给定的条件匹配来让它更优雅一点。为此，我们添加另一个可选扩展。这个函数添加了一个名为matching的函数，其接受一个未包装的值并返回Bool的函数：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Optional</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">matching</span><span class="params">(<span class="number">_</span> predicate: <span class="params">(Wrapped)</span></span></span> -&gt; <span class="type">Bool</span>) -&gt; <span class="type">Wrapped</span>? &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> value = <span class="keyword">self</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">guard</span> predicate(value) <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">Optional</span> </span>&#123;</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">matching</span><span class="hljs-params">(<span class="hljs-number">_</span> predicate: <span class="hljs-params">(Wrapped)</span></span></span> -&gt; <span class="hljs-type">Bool</span>) -&gt; <span class="hljs-type">Wrapped</span>? &#123;</span><br><span class="line">        <span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> value = <span class="hljs-keyword">self</span> <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">guard</span> predicate(value) <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用上面的内容，我们现在可以通过构造另一个可选表达式链，使搜索栏处理代码变得非常好和富有表现力。首先，我们使用新的匹配API检查搜索栏的文本是否符合我们的长度要求，然后将该操作的结果直接映射到我们的PerformSearch方法中-如下所示:</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">searchBar.text.matching &#123; $<span class="number">0</span>.<span class="built_in">count</span> &gt; <span class="number">2</span> &#125;</span><br><span class="line">    .<span class="built_in">map</span>(performSearch)</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">searchBar.text.matching &#123; $<span class="hljs-number">0</span>.<span class="hljs-built_in">count</span> &gt; <span class="hljs-number">2</span> &#125;</span><br><span class="line">    .<span class="hljs-built_in">map</span>(performSearch)</span><br></pre></td></tr></table></figure>
 <p>虽然上面的实现非常酷，但是当我们想要将给定的可选项与一系列不同的条件进行匹配时，这种方法才能真正发挥作用，使用条件列表较长的guard语句可能会很快变得混乱，但是使用我们的新匹配函数，我们现在可以轻松地将多个条件链接在一起，就像在本例中，我们正在验证数据库记录是否符合两个不同的要求：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> activeFriend = database.userRecord(withID: id)</span><br><span class="line">    .matching &#123; $<span class="number">0</span>.isFriend &#125;</span><br><span class="line">    .matching &#123; $<span class="number">0</span>.isActive &#125;</span><br><span class="line">    .matching &#123; $<span class="number">0</span>.isGirl &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> activeFriend = database.userRecord(withID: id)</span><br><span class="line">    .matching &#123; $<span class="hljs-number">0</span>.isFriend &#125;</span><br><span class="line">    .matching &#123; $<span class="hljs-number">0</span>.isActive &#125;</span><br><span class="line">    .matching &#123; $<span class="hljs-number">0</span>.isGirl &#125;</span><br></pre></td></tr></table></figure>
 <p>现在可以将我们的可选项视为可查询值。太酷了！ 😎</p>
 <h1 id="Assigning-reusable-views"><a href="#Assigning-reusable-views" class="headerlink" title="Assigning reusable views"></a>Assigning reusable views</h1><p>最后让我们试着通过扩展<code>Optional</code>来更好的处理可重复使用的View对象，Apple的UI框架中的一个常见模式是视图提供某些“插槽”，我们作为API用户可以插入我们自己的自定义子视图，例如<code>UITableViewCell</code>提供了一个<code>accessoryView</code>属性，这让我们可以在单元格的末尾位置放置我们想要的任何视图 - 这在构建自定义列表时非常方便</p>
 <p>然而，这些“插槽”需要支持所有类型的View，使得我们处理的类型通常是<code>Optional&lt;UIView&gt;</code> - 这意味着我们几乎总是必须进行类型转换以将这样的属性的值转换为我们自己的视图类型。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Since we want to reuse any existing accessory view if possible,</span></span><br><span class="line"><span class="comment">// we first need to cast it to our own view type</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> statusView = cell.accessoryView <span class="keyword">as</span>? <span class="type">TodoItemStatusView</span> &#123;</span><br><span class="line">    statusView.status = item.status</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> statusView = <span class="type">TotoItemStatusView</span>()</span><br><span class="line">    statusView.status = item.status</span><br><span class="line">    cell.accessoryView = statusView</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//Since we want to reuse any existing accessory view if possible,</span></span><br><span class="line"><span class="hljs-comment">// we first need to cast it to our own view type</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> statusView = cell.accessoryView <span class="hljs-keyword">as</span>? <span class="hljs-type">TodoItemStatusView</span> &#123;</span><br><span class="line">    statusView.status = item.status</span><br><span class="line">&#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">    <span class="hljs-keyword">let</span> statusView = <span class="hljs-type">TotoItemStatusView</span>()</span><br><span class="line">    statusView.status = item.status</span><br><span class="line">    cell.accessoryView = statusView</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是另一种情况，在这种情况下，对可选项的扩展非常有用。让我们对包装UIView的所有选项编写一个扩展，然后再次使用<code>@autoclosure</code>的强大功能，使我们能够传递一个表达式，该表达式在需要时创建一个新视图，仅在我们没有现有视图时使用：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Optional</span> <span class="title">where</span> <span class="title">Wrapped</span> == <span class="title">UIView</span> </span>&#123;</span><br><span class="line">    <span class="keyword">mutating</span> <span class="function"><span class="keyword">func</span> <span class="title">get</span>&lt;T: UIView&gt;<span class="params">(orSet expression: @autoclosure <span class="params">()</span></span></span> -&gt; <span class="type">T</span>) -&gt; <span class="type">T</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> view = <span class="keyword">self</span> <span class="keyword">as</span>? <span class="type">T</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> newView = expression()</span><br><span class="line">            <span class="keyword">self</span> = newView</span><br><span class="line">            <span class="keyword">return</span> newView</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> view</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">Optional</span> <span class="hljs-title">where</span> <span class="hljs-title">Wrapped</span> == <span class="hljs-title">UIView</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">get</span>&lt;T: UIView&gt;<span class="hljs-params">(orSet expression: @autoclosure <span class="hljs-params">()</span></span></span> -&gt; <span class="hljs-type">T</span>) -&gt; <span class="hljs-type">T</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">guard</span> <span class="hljs-keyword">let</span> view = <span class="hljs-keyword">self</span> <span class="hljs-keyword">as</span>? <span class="hljs-type">T</span> <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">let</span> newView = expression()</span><br><span class="line">            <span class="hljs-keyword">self</span> = newView</span><br><span class="line">            <span class="hljs-keyword">return</span> newView</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">return</span> view</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用上面的扩展，我们现在可以使我们的cell配置代码比以前更好-将其转换为两行简单的代码：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> statusView = cell.accessoryView.<span class="keyword">get</span>(orSet: <span class="type">TodoItemStatusView</span>())</span><br><span class="line">statusView.status = item.status</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> statusView = cell.accessoryView.<span class="hljs-keyword">get</span>(orSet: <span class="hljs-type">TodoItemStatusView</span>())</span><br><span class="line">statusView.status = item.status</span><br></pre></td></tr></table></figure>
 <p>我们不仅通过消除手动解包和分配附件视图的需要来消除样板，我们还通过用明确定义的表达式替换<code>if</code>和<code>else</code>条件使我们的代码更具声明性。 😀</p>
 <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>Swift的类型系统被设计为支持任何类型的自定义扩展，而且<code>Optional</code>是使用标准枚举实现的，这使得做一些真正有趣的事情成为可能。通过将公共表达式和操作包装在目标明确的<code>Optional extension</code>中，我们既可以减少样板文件，也可以使处理选项的代码更加清晰和富有表现力。</p>
 <p>然而，小心的将扩展类型引入到代码库中也很重要，因为大量的扩展可以使我们的项目的学习曲线变得更陡。一般来说，避免过早的优化，只有当我们看到一个模式在多个地方重复出现时才引入一个扩展，这可能是一个很好的策略。</p>
 
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/12/19/RunLoop/" rel="next" title="RunLoop 实践">
-                <i class="fa fa-chevron-left"></i> RunLoop 实践
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-  </div>
-
-
-          </div>
-          
-
-  
-    <div id="gitalk-container"></div>
-  
-
-
-
         </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">恩熙爸爸</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives/">
-                
-                    <span class="site-state-item-count">5</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">2</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-            </nav>
-          
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Converting-nil-into-errors"><span class="nav-number">1.</span> <span class="nav-text">Converting nil into errors</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Expressive-checks"><span class="nav-number">2.</span> <span class="nav-text">Expressive checks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Matching-against-a-predicate"><span class="nav-number">3.</span> <span class="nav-text">Matching against a predicate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Assigning-reusable-views"><span class="nav-number">4.</span> <span class="nav-text">Assigning reusable views</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">5.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
         
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">恩熙爸爸</span>
-
-  
-
-  
+        
+    </div>
 </div>
 
 
 
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <div class="buttons is-centered">
+            
+                
+<div class="notification is-danger">
+    You forgot to set the <code>qrcode</code> for Alipay. Please set it in <code>_config.yml</code>.
+</div>
+
+                
+                
+<div class="notification is-danger">
+    You forgot to set the <code>qrcode</code> for Wechat. Please set it in <code>_config.yml</code>.
+</div>
+
+                
+                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
+
+<div class="notification is-danger">
+    You forgot to set the <code>business</code> and <code>currency_code</code> for Paypal. Please set it in <code>_config.yml</code>.
+</div>
+
+                
+                
+<div class="notification is-danger">
+    You forgot to set the <code>url</code> Patreon. Please set it in <code>_config.yml</code>.
+</div>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/12/19/RunLoop/">
+                <span class="level-item">RunLoop 实践</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
 
 
 
 
-
-
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-128x128 has-mb-6" src="https://www.gravatar.com/avatar/35d0cb21a7fe7381d653351e8051410c?s=128" alt="enxibaba">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        enxibaba
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        one by doing
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>EnShi,HuBei</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        5
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        2
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        0
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="http://github.com/enxibaba">
+                关注我</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="http://github.com/enxibaba">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="http://facebook.com">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="http://twitter.com">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Dribbble" href="http://dribbble.com">
+                
+                <i class="fab fa-dribbble"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+    
         
 
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://hexo.io" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">Hexo</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">hexo.io</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">PPOffice</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">github.com</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
 
 
-
-
-
-
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Swift/">
+            <span class="level-start">
+                <span class="level-item">Swift</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/iOS/">
+            <span class="level-start">
+                <span class="level-item">iOS</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/01/27/Extending-optionals-in-Swift/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Optionals extension">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-27T14:47:33.000Z">2019-01-27</time></div>
+                    <a href="/2019/01/27/Extending-optionals-in-Swift/" class="has-link-black-ter is-size-6">Optionals extension</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/19/RunLoop/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="RunLoop 实践">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-19T02:14:00.000Z">2018-12-19</time></div>
+                    <a href="/2018/12/19/RunLoop/" class="has-link-black-ter is-size-6">RunLoop 实践</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/06/20/Runtime-in-Swift/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Swift 中的Runtime">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-06-20T02:14:00.000Z">2018-06-20</time></div>
+                    <a href="/2018/06/20/Runtime-in-Swift/" class="has-link-black-ter is-size-6">Swift 中的Runtime</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/04/20/Swift-NSSortDescriptor/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="用Swift类型系统模拟OC的运行时特性">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-04-20T12:14:00.000Z">2018-04-20</time></div>
+                    <a href="/2018/04/20/Swift-NSSortDescriptor/" class="has-link-black-ter is-size-6">用Swift类型系统模拟OC的运行时特性</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/04/19/NSOperation-and-GCD/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="如何选择 NSOperation and GCD">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-04-19T02:14:00.000Z">2018-04-19</time></div>
+                    <a href="/2018/04/19/NSOperation-and-GCD/" class="has-link-black-ter is-size-6">如何选择 NSOperation and GCD</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
 
         
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
         
-          <span id="scrollpercent"><span>0</span>%</span>
+        <li>
+            <a class="level is-marginless" href="/archives/2019/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
-      </div>
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+            </div>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/01/27/Extending-optionals-in-Swift/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Optionals extension">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-01-27T14:47:33.000Z">2019-01-27</time></div>
+                    <a href="/2019/01/27/Extending-optionals-in-Swift/" class="has-link-black-ter is-size-6">Optionals extension</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/12/19/RunLoop/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="RunLoop 实践">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-19T02:14:00.000Z">2018-12-19</time></div>
+                    <a href="/2018/12/19/RunLoop/" class="has-link-black-ter is-size-6">RunLoop 实践</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/06/20/Runtime-in-Swift/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Swift 中的Runtime">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-06-20T02:14:00.000Z">2018-06-20</time></div>
+                    <a href="/2018/06/20/Runtime-in-Swift/" class="has-link-black-ter is-size-6">Swift 中的Runtime</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/04/20/Swift-NSSortDescriptor/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="用Swift类型系统模拟OC的运行时特性">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-04-20T12:14:00.000Z">2018-04-20</time></div>
+                    <a href="/2018/04/20/Swift-NSSortDescriptor/" class="has-link-black-ter is-size-6">用Swift类型系统模拟OC的运行时特性</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/04/19/NSOperation-and-GCD/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="如何选择 NSOperation and GCD">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-04-19T02:14:00.000Z">2018-04-19</time></div>
+                    <a href="/2018/04/19/NSOperation-and-GCD/" class="has-link-black-ter is-size-6">如何选择 NSOperation and GCD</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2019/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <div class="field is-grouped is-grouped-multiline">
+                
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="Optionals extension" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 恩熙爸爸&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="http://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+        <span id="busuanzi_container_site_uv">
+            ❤️ 感谢
+            <span id="busuanzi_value_site_uv">0</span>
+            位小伙伴的
+        </span>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv">0</span>
+            次陪伴
+        </span>
+    </div> 
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
     
 
     
-
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
     
 
     
-  </div>
+    
 
-  
-
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
     
-      
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=6.6.0"></script>
-
-  <script src="/js/src/motion.js?v=6.6.0"></script>
-
-
-
-  
-  
-
-  
-  <script src="/js/src/scrollspy.js?v=6.6.0"></script>
-<script src="/js/src/post-details.js?v=6.6.0"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=6.6.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
-
-  
-  
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.css">
-
-  
-  
-  <script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
-
-   <script>
-        var gitalk = new Gitalk({
-          clientID: 'd21ac3cc1ac3267bc504',
-          clientSecret: '1e7729c497ca1f915b126c1f1e0ce4fe82233b05',
-          repo: 'enxibaba.github.io',
-          owner: 'enxibaba',
-          admin: ['enxibaba'],
-          id: md5(location.pathname),
-          distractionFreeMode: 'true'
-        })
-        gitalk.render('gitalk-container')
-       </script>
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
 </html>

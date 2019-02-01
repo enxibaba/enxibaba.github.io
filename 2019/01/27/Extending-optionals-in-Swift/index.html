@@ -7,18 +7,6 @@
 
 
 
-    <meta name="description" content="Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有Optional实际上都是使用enum optional&amp;lt;wrapped&amp;gt;表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。 Converting nil into errors当我们处理可选值的时候，通常想要将nil转换成Swift标准类型erro">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Optionals extension">
-<meta property="og:url" content="http://enxibaba.github.io/2019/01/27/Extending-optionals-in-Swift/index.html">
-<meta property="og:site_name" content="enxi&#39;s blog">
-<meta property="og:description" content="Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有Optional实际上都是使用enum optional&amp;lt;wrapped&amp;gt;表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。 Converting nil into errors当我们处理可选值的时候，通常想要将nil转换成Swift标准类型erro">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-27T15:06:34.336Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Optionals extension">
-<meta name="twitter:description" content="Swift的可选类型，这一功能的很大一部分是使用类型系统实现的，因为所有Optional实际上都是使用enum optional&amp;lt;wrapped&amp;gt;表示的。这给了我们一些有趣的功能，因为我们可以像其他类型一样扩展这个枚举来添加我们自己的便利API和其他类型的功能。 Converting nil into errors当我们处理可选值的时候，通常想要将nil转换成Swift标准类型erro">
-
 
 
 
@@ -140,10 +128,12 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-01-27T14:47:33.000Z">2019-01-27</time>
+                
+                <time class="level-item has-text-grey" datetime="2019-01-27T14:47:33.000Z">
+                    2019-01-27</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
                 </div>
                 
                 
@@ -158,7 +148,7 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Optionals extension
+            Optionals extension
             
         </h1>
         <div class="content">
@@ -201,6 +191,15 @@
 <p>然而，小心的将扩展类型引入到代码库中也很重要，因为大量的扩展可以使我们的项目的学习曲线变得更陡。一般来说，避免过早的优化，只有当我们看到一个模式在多个地方重复出现时才引入一个扩展，这可能是一个很好的策略。</p>
 
         </div>
+        <div class="level is-size-7 has-text-grey">
+            <div class="level-left">
+                <i class="far fa-eye"></i>
+                <span>&nbsp;</span>
+                <span id="busuanzi_container_page_pv" style="display: inline;">
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+            </div>
+        </div>
         
         
         
@@ -211,34 +210,31 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <h3 class="menu-label has-text-centered">
+            喜欢这篇文章？打赏一下作者吧
+        </h3>
         <div class="buttons is-centered">
             
-                
-<div class="notification is-danger">
-    You forgot to set the <code>qrcode</code> for Alipay. Please set it in <code>_config.yml</code>.
-</div>
+            
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.JPG" alt="支付宝"></div>
+</a>
 
-                
-                
-<div class="notification is-danger">
-    You forgot to set the <code>qrcode</code> for Wechat. Please set it in <code>_config.yml</code>.
-</div>
+            
+            
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechat.JPG" alt="微信"></div>
+</a>
 
-                
-                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
-
-<div class="notification is-danger">
-    You forgot to set the <code>business</code> and <code>currency_code</code> for Paypal. Please set it in <code>_config.yml</code>.
-</div>
-
-                
-                
-<div class="notification is-danger">
-    You forgot to set the <code>url</code> Patreon. Please set it in <code>_config.yml</code>.
-</div>
-
-                
+            
         </div>
     </div>
 </div>
@@ -251,7 +247,8 @@
         
         <div class="level-end">
             <a class="level level-item has-link-grey  article-nav-next" href="/2018/12/19/RunLoop/">
-                <span class="level-item">RunLoop 实践</span>
+                <span class="level-item">
+                    RunLoop 实践</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -260,6 +257,29 @@
 </div>
 
 
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">
+            评论
+        </h3>
+        
+<div id="valine-thread"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'pDKVJTol60VgvOXBqWtxsfny-gzGzoHsz',
+        app_key: 'wikk44KTSKtyrKnBSWM4Sitk',
+        placeholder: '随便说点什么吧'
+    });
+</script>
+
+    </div>
+</div>
 </div>
                 
 
@@ -829,6 +849,17 @@
                 &copy; 2019 恩熙爸爸&nbsp;
                 Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 </p>
+                <p class="is-size-7">
+                        <span id="busuanzi_container_site_uv">
+                                ❤️ 感谢
+                                <span id="busuanzi_value_site_uv">0</span>
+                                位小伙伴的
+                            </span>
+                            <span id="busuanzi_container_site_pv">
+                                <span id="busuanzi_value_site_pv">0</span>
+                                次陪伴
+                            </span>
+                </p>
             </div>
             <div class="level-end">
             
@@ -863,16 +894,7 @@
             
             </div>
         </div>
-        <span id="busuanzi_container_site_uv">
-            ❤️ 感谢
-            <span id="busuanzi_value_site_uv">0</span>
-            位小伙伴的
-        </span>
-        <span id="busuanzi_container_site_pv">
-            <span id="busuanzi_value_site_pv">0</span>
-            次陪伴
-        </span>
-    </div> 
+    </div>
 </footer>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>

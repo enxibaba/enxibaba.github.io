@@ -7,18 +7,6 @@
 
 
 
-    <meta name="description" content="在Swift里面，要使用OC的运行时特性，我们需要把类定义成从NSObject派生的类，并且要给属性添加通过final关键字。 用OC运行时特性进行排序我们来看个和搜索有关的例子。首先，定义一个表示视频信息的类： 123456789101112131415final class Episode: NSObject &amp;#123;       @objc var title: String">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Swift 中的Runtime">
-<meta property="og:url" content="http://enxibaba.github.io/2018/06/20/Runtime-in-Swift/index.html">
-<meta property="og:site_name" content="enxi&#39;s blog">
-<meta property="og:description" content="在Swift里面，要使用OC的运行时特性，我们需要把类定义成从NSObject派生的类，并且要给属性添加通过final关键字。 用OC运行时特性进行排序我们来看个和搜索有关的例子。首先，定义一个表示视频信息的类： 123456789101112131415final class Episode: NSObject &amp;#123;       @objc var title: String">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-10T07:59:48.704Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Swift 中的Runtime">
-<meta name="twitter:description" content="在Swift里面，要使用OC的运行时特性，我们需要把类定义成从NSObject派生的类，并且要给属性添加通过final关键字。 用OC运行时特性进行排序我们来看个和搜索有关的例子。首先，定义一个表示视频信息的类： 123456789101112131415final class Episode: NSObject &amp;#123;       @objc var title: String">
-
 
 
 
@@ -140,10 +128,12 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-06-20T02:14:00.000Z">2018-06-20</time>
+                
+                <time class="level-item has-text-grey" datetime="2018-06-20T02:14:00.000Z">
+                    2018-06-20</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                    <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
                 </div>
                 
                 
@@ -158,7 +148,7 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Swift 中的Runtime
+            Swift 中的Runtime
             
         </h1>
         <div class="content">
@@ -209,6 +199,15 @@ title 4 Paid    500
 <h2 id="What’s-next"><a href="#What’s-next" class="headerlink" title="What’s next?"></a>What’s next?</h2><p>为了在Swift中找到更易用和安全的解决方案，我们还是得从<font size="4" color="#E6428C">NSSortDescriptor</font>的思路入手，把排序规则的表达、排序规则的组合，以及执行排序的动作独立分开。只是，为了充分利用Swift编译器提供类型检查，我们要避免使用运行时机制来识别要访问的内容。具体该怎么办呢？大体的思路是这样的，对于比较元素时执行的函数，我们可以去掉selector，直接用Swift中的函数类型。而对于获取要排序的属性，我们也要通过一个函数类型来表达，而不要通过Key-Value coding。在下篇文章中，我们就基于这个思路，用Swift自身的方式，来模拟OC的这两个运行时特性。</p>
 
         </div>
+        <div class="level is-size-7 has-text-grey">
+            <div class="level-left">
+                <i class="far fa-eye"></i>
+                <span>&nbsp;</span>
+                <span id="busuanzi_container_page_pv" style="display: inline;">
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+            </div>
+        </div>
         
         
         
@@ -219,34 +218,31 @@ title 4 Paid    500
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <h3 class="menu-label has-text-centered">
+            喜欢这篇文章？打赏一下作者吧
+        </h3>
         <div class="buttons is-centered">
             
-                
-<div class="notification is-danger">
-    You forgot to set the <code>qrcode</code> for Alipay. Please set it in <code>_config.yml</code>.
-</div>
+            
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.JPG" alt="支付宝"></div>
+</a>
 
-                
-                
-<div class="notification is-danger">
-    You forgot to set the <code>qrcode</code> for Wechat. Please set it in <code>_config.yml</code>.
-</div>
+            
+            
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechat.JPG" alt="微信"></div>
+</a>
 
-                
-                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
-
-<div class="notification is-danger">
-    You forgot to set the <code>business</code> and <code>currency_code</code> for Paypal. Please set it in <code>_config.yml</code>.
-</div>
-
-                
-                
-<div class="notification is-danger">
-    You forgot to set the <code>url</code> Patreon. Please set it in <code>_config.yml</code>.
-</div>
-
-                
+            
         </div>
     </div>
 </div>
@@ -259,14 +255,16 @@ title 4 Paid    500
         <div class="level-start">
             <a class="level level-item has-link-grey  article-nav-prev" href="/2018/12/19/RunLoop/">
                 <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">RunLoop 实践</span>
+                <span class="level-item">
+                    RunLoop 实践</span>
             </a>
         </div>
         
         
         <div class="level-end">
             <a class="level level-item has-link-grey  article-nav-next" href="/2018/04/20/Swift-NSSortDescriptor/">
-                <span class="level-item">用Swift类型系统模拟OC的运行时特性</span>
+                <span class="level-item">
+                    用Swift类型系统模拟OC的运行时特性</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -275,6 +273,29 @@ title 4 Paid    500
 </div>
 
 
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">
+            评论
+        </h3>
+        
+<div id="valine-thread"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'pDKVJTol60VgvOXBqWtxsfny-gzGzoHsz',
+        app_key: 'wikk44KTSKtyrKnBSWM4Sitk',
+        placeholder: '随便说点什么吧'
+    });
+</script>
+
+    </div>
+</div>
 </div>
                 
 
@@ -844,6 +865,17 @@ title 4 Paid    500
                 &copy; 2019 恩熙爸爸&nbsp;
                 Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 </p>
+                <p class="is-size-7">
+                        <span id="busuanzi_container_site_uv">
+                                ❤️ 感谢
+                                <span id="busuanzi_value_site_uv">0</span>
+                                位小伙伴的
+                            </span>
+                            <span id="busuanzi_container_site_pv">
+                                <span id="busuanzi_value_site_pv">0</span>
+                                次陪伴
+                            </span>
+                </p>
             </div>
             <div class="level-end">
             
@@ -878,16 +910,7 @@ title 4 Paid    500
             
             </div>
         </div>
-        <span id="busuanzi_container_site_uv">
-            ❤️ 感谢
-            <span id="busuanzi_value_site_uv">0</span>
-            位小伙伴的
-        </span>
-        <span id="busuanzi_container_site_pv">
-            <span id="busuanzi_value_site_pv">0</span>
-            次陪伴
-        </span>
-    </div> 
+    </div>
 </footer>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>

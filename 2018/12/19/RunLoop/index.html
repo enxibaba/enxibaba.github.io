@@ -7,22 +7,6 @@
 
 
 
-    <meta name="description" content="RunLoop 的概念通常一个线程一次只能执行一个任务，执行完成任务后线程就会退出。如果我们需要一个机制，让线程能随时处理事件但并不退出，通常的逻辑是这样的： func loop() {    init();    do {        var message = get_next_message();        process_message(message);    } while (m">
-<meta property="og:type" content="article">
-<meta property="og:title" content="RunLoop 实践">
-<meta property="og:url" content="http://enxibaba.github.io/2018/12/19/RunLoop/index.html">
-<meta property="og:site_name" content="enxi&#39;s blog">
-<meta property="og:description" content="RunLoop 的概念通常一个线程一次只能执行一个任务，执行完成任务后线程就会退出。如果我们需要一个机制，让线程能随时处理事件但并不退出，通常的逻辑是这样的： func loop() {    init();    do {        var message = get_next_message();        process_message(message);    } while (m">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://enxibaba.github.io/2018/12/19/RunLoop/RunLoopMode.png">
-<meta property="og:image" content="http://enxibaba.github.io/2018/12/19/RunLoop/AutoreleasePool.png">
-<meta property="og:image" content="http://enxibaba.github.io/2018/12/19/RunLoop/NSRunLoop.png">
-<meta property="og:updated_time" content="2019-01-10T07:59:49.776Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RunLoop 实践">
-<meta name="twitter:description" content="RunLoop 的概念通常一个线程一次只能执行一个任务，执行完成任务后线程就会退出。如果我们需要一个机制，让线程能随时处理事件但并不退出，通常的逻辑是这样的： func loop() {    init();    do {        var message = get_next_message();        process_message(message);    } while (m">
-<meta name="twitter:image" content="http://enxibaba.github.io/2018/12/19/RunLoop/RunLoopMode.png">
-
 
 
 
@@ -144,10 +128,12 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-12-19T02:14:00.000Z">2018-12-19</time>
+                
+                <time class="level-item has-text-grey" datetime="2018-12-19T02:14:00.000Z">
+                    2018-12-19</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
+                    <a class="has-link-grey -link" href="/categories/iOS/">iOS</a>
                 </div>
                 
                 
@@ -162,7 +148,7 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                RunLoop 实践
+            RunLoop 实践
             
         </h1>
         <div class="content">
@@ -281,6 +267,15 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(_CFThreadRef t) {
 <h2 id="RunLoop-思维导图"><a href="#RunLoop-思维导图" class="headerlink" title="RunLoop 思维导图"></a>RunLoop 思维导图</h2><p><img src="/2018/12/19/RunLoop/NSRunLoop.png" alt="RunLoop Mind"></p>
 
         </div>
+        <div class="level is-size-7 has-text-grey">
+            <div class="level-left">
+                <i class="far fa-eye"></i>
+                <span>&nbsp;</span>
+                <span id="busuanzi_container_page_pv" style="display: inline;">
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+            </div>
+        </div>
         
         
         
@@ -291,34 +286,31 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(_CFThreadRef t) {
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3>
+        <h3 class="menu-label has-text-centered">
+            喜欢这篇文章？打赏一下作者吧
+        </h3>
         <div class="buttons is-centered">
             
-                
-<div class="notification is-danger">
-    You forgot to set the <code>qrcode</code> for Alipay. Please set it in <code>_config.yml</code>.
-</div>
+            
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>支付宝</span>
+    <div class="qrcode"><img src="/images/alipay.JPG" alt="支付宝"></div>
+</a>
 
-                
-                
-<div class="notification is-danger">
-    You forgot to set the <code>qrcode</code> for Wechat. Please set it in <code>_config.yml</code>.
-</div>
+            
+            
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>微信</span>
+    <div class="qrcode"><img src="/images/wechat.JPG" alt="微信"></div>
+</a>
 
-                
-                <!-- Visit https://www.paypal.com/donate/buttons/ to get your donate button -->
-
-<div class="notification is-danger">
-    You forgot to set the <code>business</code> and <code>currency_code</code> for Paypal. Please set it in <code>_config.yml</code>.
-</div>
-
-                
-                
-<div class="notification is-danger">
-    You forgot to set the <code>url</code> Patreon. Please set it in <code>_config.yml</code>.
-</div>
-
-                
+            
         </div>
     </div>
 </div>
@@ -331,14 +323,16 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(_CFThreadRef t) {
         <div class="level-start">
             <a class="level level-item has-link-grey  article-nav-prev" href="/2019/01/27/Extending-optionals-in-Swift/">
                 <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Optionals extension</span>
+                <span class="level-item">
+                    Optionals extension</span>
             </a>
         </div>
         
         
         <div class="level-end">
             <a class="level level-item has-link-grey  article-nav-next" href="/2018/06/20/Runtime-in-Swift/">
-                <span class="level-item">Swift 中的Runtime</span>
+                <span class="level-item">
+                    Swift 中的Runtime</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -347,6 +341,29 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(_CFThreadRef t) {
 </div>
 
 
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">
+            评论
+        </h3>
+        
+<div id="valine-thread"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'pDKVJTol60VgvOXBqWtxsfny-gzGzoHsz',
+        app_key: 'wikk44KTSKtyrKnBSWM4Sitk',
+        placeholder: '随便说点什么吧'
+    });
+</script>
+
+    </div>
+</div>
 </div>
                 
 
@@ -916,6 +933,17 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(_CFThreadRef t) {
                 &copy; 2019 恩熙爸爸&nbsp;
                 Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 </p>
+                <p class="is-size-7">
+                        <span id="busuanzi_container_site_uv">
+                                ❤️ 感谢
+                                <span id="busuanzi_value_site_uv">0</span>
+                                位小伙伴的
+                            </span>
+                            <span id="busuanzi_container_site_pv">
+                                <span id="busuanzi_value_site_pv">0</span>
+                                次陪伴
+                            </span>
+                </p>
             </div>
             <div class="level-end">
             
@@ -950,16 +978,7 @@ CF_EXPORT CFRunLoopRef _CFRunLoopGet0(_CFThreadRef t) {
             
             </div>
         </div>
-        <span id="busuanzi_container_site_uv">
-            ❤️ 感谢
-            <span id="busuanzi_value_site_uv">0</span>
-            位小伙伴的
-        </span>
-        <span id="busuanzi_container_site_pv">
-            <span id="busuanzi_value_site_pv">0</span>
-            次陪伴
-        </span>
-    </div> 
+    </div>
 </footer>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>

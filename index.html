@@ -9,6 +9,8 @@
 
 
 
+<link rel="alternative" href="atom.xml" title="enxi&#39;s blog" type="application/atom+xml">
+
 
 
 <link rel="icon" href="/images/favicon.svg">
@@ -101,7 +103,7 @@
                 
                     
                     
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="http://github.com/ppoffice/hexo-theme-icarus">
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="http://github.com/enxibaba">
                         
                         <i class="fab fa-github"></i>
                         
@@ -123,6 +125,77 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+    <div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                
+                <i class="fas fa-arrow-alt-circle-up" style="color:#3273dc"></i>
+                <span class="level-item" style="color:#3273dc">&nbsp;置顶</span>
+                
+                <time class="level-item has-text-grey" datetime="2018-04-20T12:14:00.000Z">
+                    2018-04-20</time>
+                
+                <div class="level-item">
+                    <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分钟 读完 (大约 1139 个字)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+            <a class="has-link-black-ter" href="/2018/04/20/Swift-NSSortDescriptor/">
+                用Swift类型系统模拟OC的运行时特性</a>
+            
+        </h1>
+        <div class="content">
+            <p>在上一篇文章中，我们了解了在Swift中使用运行时会面临的一些问题，这篇文章我们试着用Swift自己的方式来实现这个工程</p>
+<h2 id="从排序函数开始"><a href="#从排序函数开始" class="headerlink" title="从排序函数开始"></a>从排序函数开始</h2><p>为了模拟<font size="4" color="#E6428C">NSSortDescriptor</font>的实现，我们先要从它的排序函数开始，它是一个接受两个相同类型的参数，并返回Bool的函数，我们用一个<font size="4" color="#E6428C">typealias</font>来表示</p>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">typealias</span> sortDescriptor = (<span class="hljs-type">T</span>,<span class="hljs-type">T</span>) -&gt; <span class="hljs-type">Bool</span></span><br></pre></td></tr></table></figure>
+<p>于是，连个比较<font size="4" color="#E6428C">String</font>的descriptor可以写成：</p>
+<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> stringDescriptor: <span class="hljs-type">SortDescriptor</span>&lt;<span class="hljs-type">String</span>&gt; = &#123;</span><br><span class="line">    $<span class="hljs-number">0</span>.localizedCompare($<span class="hljs-number">1</span>) == .orderedAscending</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        </div>
+        <div class="level is-size-7 has-text-grey">
+            <div class="level-left">
+                <i class="far fa-eye"></i>
+                <span>&nbsp;</span>
+                <span id="busuanzi_container_page_pv" style="display: inline;">
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+            </div>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                    <a class="button is-size-7 is-light" href="/2018/04/20/Swift-NSSortDescriptor/#more">
+                        阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
     <div class="card">
     
     <div class="card-content article ">
@@ -334,74 +407,6 @@
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
                 
-                <time class="level-item has-text-grey" datetime="2018-04-20T12:14:00.000Z">
-                    2018-04-20</time>
-                
-                <div class="level-item">
-                    <a class="has-link-grey -link" href="/categories/Swift/">Swift</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    8 分钟 读完 (大约 1139 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-            <a class="has-link-black-ter" href="/2018/04/20/Swift-NSSortDescriptor/">
-                用Swift类型系统模拟OC的运行时特性</a>
-            
-        </h1>
-        <div class="content">
-            <p>在上一篇文章中，我们了解了在Swift中使用运行时会面临的一些问题，这篇文章我们试着用Swift自己的方式来实现这个工程</p>
-<h2 id="从排序函数开始"><a href="#从排序函数开始" class="headerlink" title="从排序函数开始"></a>从排序函数开始</h2><p>为了模拟<font size="4" color="#E6428C">NSSortDescriptor</font>的实现，我们先要从它的排序函数开始，它是一个接受两个相同类型的参数，并返回Bool的函数，我们用一个<font size="4" color="#E6428C">typealias</font>来表示</p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">typealias</span> sortDescriptor = (<span class="hljs-type">T</span>,<span class="hljs-type">T</span>) -&gt; <span class="hljs-type">Bool</span></span><br></pre></td></tr></table></figure>
-<p>于是，连个比较<font size="4" color="#E6428C">String</font>的descriptor可以写成：</p>
-<figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> stringDescriptor: <span class="hljs-type">SortDescriptor</span>&lt;<span class="hljs-type">String</span>&gt; = &#123;</span><br><span class="line">    $<span class="hljs-number">0</span>.localizedCompare($<span class="hljs-number">1</span>) == .orderedAscending</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        </div>
-        <div class="level is-size-7 has-text-grey">
-            <div class="level-left">
-                <i class="far fa-eye"></i>
-                <span>&nbsp;</span>
-                <span id="busuanzi_container_page_pv" style="display: inline;">
-                    <span id="busuanzi_value_page_pv">0</span>
-                </span>
-            </div>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                    <a class="button is-size-7 is-light" href="/2018/04/20/Swift-NSSortDescriptor/#more">
-                        阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                
                 <time class="level-item has-text-grey" datetime="2018-04-19T02:14:00.000Z">
                     2018-04-19</time>
                 
@@ -484,7 +489,7 @@
                     
                     
                     <p class="is-size-6 is-block">
-                        one by doing
+                        Learn by doing
                     </p>
                     
                     
@@ -533,40 +538,6 @@
                 关注我</a>
         </div>
         
-        
-        <div class="level is-mobile">
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="http://github.com/enxibaba">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="http://facebook.com">
-                
-                <i class="fab fa-facebook"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="http://twitter.com">
-                
-                <i class="fab fa-twitter"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Dribbble" href="http://dribbble.com">
-                
-                <i class="fab fa-dribbble"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
-                
-                <i class="fas fa-rss"></i>
-                
-            </a>
-            
-        </div>
         
     </div>
 </div>
